@@ -1,0 +1,27 @@
+AnatFolder='C:\Users\user\Documents\Reyhaneh\EEG+fMRI\EO\MRI_data\Anat';
+AnatAll=dir(AnatFolder);
+
+
+%% change from dicom to nii.gz is done in Mango
+
+%% unzip the nii.gz so that spm can work with
+for SubIDInd=3:length(AnatAll)
+    disp(AnatAll(SubIDInd).name);
+    StructuralImage=[AnatFolder,'\',AnatAll(SubIDInd).name,'\',AnatAll(SubIDInd).name,'.nii.gz'];
+    gunzip(StructuralImage)
+end
+
+%% change the segmentation batch for each participant
+segmentation_batchTemplate=load('C:\Users\user\Documents\Reyhaneh\EEG+fMRI\Codes\Matlab\segmentation_batch_template.mat');
+
+numPar=1;
+for SubIDInd=3:length(AnatAll)
+    disp(AnatAll(SubIDInd).name);
+    
+    matlabbatch{numPar}=segmentation_batchTemplate.matlabbatch{1};
+    matlabbatch{numPar}.spm.spatial.preproc.channel.vols{1}=[AnatFolder,'\',,'\']
+
+    StructuralImage=[AnatFolder,'\',AnatAll(SubIDInd).name,'\',AnatAll(SubIDInd).name,'.nii.gz'];
+    gunzip(StructuralImage)
+end
+

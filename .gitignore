@@ -1,0 +1,5 @@
+*.csv
+*.xlsx
+*.npy
+*.nii
+*.nii.gz
